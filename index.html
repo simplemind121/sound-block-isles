@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="theme-color" content="#5fb3e8" />
+    <title>声音方块岛</title>
+    <style>
+      html, body { margin: 0; height: 100%; background: #5fb3e8; overflow: hidden; touch-action: none; -webkit-user-select: none; user-select: none; -webkit-tap-highlight-color: transparent; }
+      #game { position: fixed; inset: 0; }
+      #boot { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; font: bold 28px system-ui, sans-serif; color: #fff; }
+      #boot i { display: inline-block; width: 28px; height: 28px; margin: 0 6px; background: #ffd23f; box-shadow: inset -4px -4px 0 #d9a400; animation: hop .6s infinite alternate; }
+      #boot i:nth-child(2) { background: #ff7b54; box-shadow: inset -4px -4px 0 #c94f2e; animation-delay: .2s; }
+      #boot i:nth-child(3) { background: #7bd389; box-shadow: inset -4px -4px 0 #48a35a; animation-delay: .4s; }
+      @keyframes hop { to { transform: translateY(-14px); } }
+    </style>
+  </head>
+  <body>
+    <div id="boot"><i></i><i></i><i></i></div>
+    <div id="game"></div>
+    <div id="parent-root"></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

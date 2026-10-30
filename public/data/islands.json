@@ -1,0 +1,44 @@
+{
+  "_说明": "主题岛规划。status: open=已开放，coming=即将开放。questions 是开放式“为什么”问题，所有选项都是好答案，只记录孩子的选择。icon 对应 src/art/sprites.ts 里的贴图名。",
+  "islands": [
+    {
+      "id": "home", "nameZh": "我的家", "weeks": "1–2", "status": "open",
+      "letters": ["s", "a", "t", "i", "p", "n"],
+      "rhymeWarmup": true,
+      "bridgePlanks": 6,
+      "offlineTaskZh": "在家里找 3 样 s 开头的东西（比如 sofa、sock、spoon），说给比普听。",
+      "questions": [
+        {
+          "id": "home_room", "where": "world",
+          "promptZh": "家里哪个房间最重要？为什么？",
+          "options": [
+            { "id": "bedroom", "icon": "q_bed",  "zh": "卧室" },
+            { "id": "kitchen", "icon": "q_pot",  "zh": "厨房" },
+            { "id": "living",  "icon": "q_sofa", "zh": "客厅" }
+          ],
+          "whyZh": "为什么呢？说给爸爸妈妈听吧！"
+        },
+        {
+          "id": "bridge_material", "where": "bridge",
+          "promptZh": "桥用木头修，还是用石头修？你来选！",
+          "options": [
+            { "id": "wood",  "icon": "block_wood",  "zh": "木头" },
+            { "id": "stone", "icon": "block_stone", "zh": "石头" }
+          ],
+          "reasons": [
+            { "id": "light",  "icon": "q_feather", "zh": "因为它很轻" },
+            { "id": "strong", "icon": "q_shield",  "zh": "因为它很结实" },
+            { "id": "pretty", "icon": "q_heart",   "zh": "因为它好看" }
+          ],
+          "whyZh": "为什么呢？"
+        }
+      ]
+    },
+    { "id": "farm",    "nameZh": "动物农场",   "weeks": "3–4",   "status": "coming", "letters": ["c", "k", "e", "h", "r", "m", "d"], "offlineTaskZh": "模仿 3 种动物的叫声并说出名字" },
+    { "id": "garden",  "nameZh": "花园与植物", "weeks": "5–6",   "status": "coming", "letters": ["g", "o", "u", "l", "f", "b"], "offlineTaskZh": "和家长一起种一颗种子" },
+    { "id": "weather", "nameZh": "天气",       "weeks": "7–8",   "status": "coming", "offlineTaskZh": "每天用英语说出今天的天气" },
+    { "id": "ocean",   "nameZh": "水和海洋",   "weeks": "9–10",  "status": "coming", "offlineTaskZh": "在水盆里做浮沉小实验" },
+    { "id": "body",    "nameZh": "我的身体",   "weeks": "11–12", "status": "coming", "offlineTaskZh": "指着身体部位说出英文" },
+    { "id": "town",    "nameZh": "我的小镇",   "weeks": "13–14", "status": "coming", "offlineTaskZh": "给家人读一个自己拼的小故事" }
+  ]
+}

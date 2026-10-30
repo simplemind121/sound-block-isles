@@ -1,0 +1,27 @@
+{
+  "_说明": "押韵热身题目。rhyme=true 表示两个词押韵。词只用来听，不要求认读。",
+  "pairs": [
+    { "a": "cat",  "b": "hat",  "rhyme": true },
+    { "a": "pin",  "b": "tin",  "rhyme": true },
+    { "a": "sun",  "b": "run",  "rhyme": true },
+    { "a": "pig",  "b": "dig",  "rhyme": true },
+    { "a": "nap",  "b": "tap",  "rhyme": true },
+    { "a": "bee",  "b": "tree", "rhyme": true },
+    { "a": "dog",  "b": "log",  "rhyme": true },
+    { "a": "pan",  "b": "fan",  "rhyme": true },
+    { "a": "bed",  "b": "red",  "rhyme": true },
+    { "a": "sit",  "b": "hit",  "rhyme": true },
+    { "a": "cake", "b": "lake", "rhyme": true },
+    { "a": "moon", "b": "spoon","rhyme": true },
+    { "a": "cat",  "b": "dog",  "rhyme": false },
+    { "a": "pin",  "b": "pan",  "rhyme": false },
+    { "a": "sun",  "b": "sit",  "rhyme": false },
+    { "a": "pig",  "b": "bed",  "rhyme": false },
+    { "a": "nap",  "b": "nest", "rhyme": false },
+    { "a": "bee",  "b": "box",  "rhyme": false },
+    { "a": "tap",  "b": "top",  "rhyme": false },
+    { "a": "fan",  "b": "fish", "rhyme": false },
+    { "a": "hat",  "b": "hen",  "rhyme": false },
+    { "a": "moon", "b": "milk", "rhyme": false }
+  ]
+}

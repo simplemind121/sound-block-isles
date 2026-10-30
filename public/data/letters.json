@@ -1,0 +1,431 @@
+{
+  "_说明": "字母数据。坐标在 0–1 的方框内：y=0 顶部，0.8 为基线。笔画类型：line [x1,y1,x2,y2]；arc 圆心 c、半径 r、角度 a=[起,止]（度，0=右，90=下，止>起为顺时针）；dot 圆点 c。tts 只在没有录音时使用。",
+  "letters": [
+    {
+      "id": "s",
+      "upper": "S",
+      "lower": "s",
+      "group": 1,
+      "tts": {
+        "sound": "sss",
+        "name": "S"
+      },
+      "picture": "snake",
+      "pictureWord": "snake",
+      "gesture": "snake",
+      "gestureZh": "手像小蛇一样扭来扭去，发出 sss",
+      "color": "#f2c14e",
+      "strokesLower": [
+        {
+          "t": "arc",
+          "c": [
+            0.5,
+            0.5
+          ],
+          "r": 0.1,
+          "a": [
+            -20,
+            -270
+          ]
+        },
+        {
+          "t": "arc",
+          "c": [
+            0.5,
+            0.7
+          ],
+          "r": 0.1,
+          "a": [
+            -90,
+            160
+          ],
+          "join": true
+        }
+      ],
+      "strokesUpper": [
+        {
+          "t": "arc",
+          "c": [
+            0.5,
+            0.275
+          ],
+          "r": 0.175,
+          "a": [
+            -20,
+            -270
+          ]
+        },
+        {
+          "t": "arc",
+          "c": [
+            0.5,
+            0.625
+          ],
+          "r": 0.175,
+          "a": [
+            -90,
+            160
+          ],
+          "join": true
+        }
+      ]
+    },
+    {
+      "id": "a",
+      "upper": "A",
+      "lower": "a",
+      "group": 1,
+      "tts": {
+        "sound": "ah",
+        "name": "A"
+      },
+      "picture": "ant",
+      "pictureWord": "ant",
+      "gesture": "ant",
+      "gestureZh": "小蚂蚁在手臂上爬，一边爬一边说 a a a",
+      "color": "#ff7b54",
+      "strokesLower": [
+        {
+          "t": "arc",
+          "c": [
+            0.47,
+            0.6
+          ],
+          "r": 0.18,
+          "a": [
+            -25,
+            -385
+          ]
+        },
+        {
+          "t": "line",
+          "p": [
+            0.65,
+            0.42,
+            0.65,
+            0.8
+          ]
+        }
+      ],
+      "strokesUpper": [
+        {
+          "t": "line",
+          "p": [
+            0.5,
+            0.1,
+            0.24,
+            0.8
+          ]
+        },
+        {
+          "t": "line",
+          "p": [
+            0.5,
+            0.1,
+            0.76,
+            0.8
+          ]
+        },
+        {
+          "t": "line",
+          "p": [
+            0.34,
+            0.55,
+            0.66,
+            0.55
+          ]
+        }
+      ]
+    },
+    {
+      "id": "t",
+      "upper": "T",
+      "lower": "t",
+      "group": 1,
+      "tts": {
+        "sound": "tuh",
+        "name": "T"
+      },
+      "picture": "top",
+      "pictureWord": "top",
+      "gesture": "top",
+      "gestureZh": "像陀螺一样转圈，脚尖点地 t t t",
+      "color": "#4ea8de",
+      "strokesLower": [
+        {
+          "t": "line",
+          "p": [
+            0.48,
+            0.22,
+            0.48,
+            0.7
+          ]
+        },
+        {
+          "t": "arc",
+          "c": [
+            0.58,
+            0.7
+          ],
+          "r": 0.1,
+          "a": [
+            180,
+            90
+          ],
+          "join": true
+        },
+        {
+          "t": "line",
+          "p": [
+            0.34,
+            0.42,
+            0.64,
+            0.42
+          ]
+        }
+      ],
+      "strokesUpper": [
+        {
+          "t": "line",
+          "p": [
+            0.24,
+            0.1,
+            0.76,
+            0.1
+          ]
+        },
+        {
+          "t": "line",
+          "p": [
+            0.5,
+            0.1,
+            0.5,
+            0.8
+          ]
+        }
+      ]
+    },
+    {
+      "id": "i",
+      "upper": "I",
+      "lower": "i",
+      "group": 1,
+      "tts": {
+        "sound": "ih",
+        "name": "I"
+      },
+      "picture": "igloo",
+      "pictureWord": "igloo",
+      "gesture": "shiver",
+      "gestureZh": "在冰屋里冷得发抖，牙齿打颤 i i i",
+      "color": "#9ad1f5",
+      "strokesLower": [
+        {
+          "t": "line",
+          "p": [
+            0.5,
+            0.42,
+            0.5,
+            0.8
+          ]
+        },
+        {
+          "t": "dot",
+          "c": [
+            0.5,
+            0.26
+          ]
+        }
+      ],
+      "strokesUpper": [
+        {
+          "t": "line",
+          "p": [
+            0.5,
+            0.1,
+            0.5,
+            0.8
+          ]
+        },
+        {
+          "t": "line",
+          "p": [
+            0.36,
+            0.1,
+            0.64,
+            0.1
+          ]
+        },
+        {
+          "t": "line",
+          "p": [
+            0.36,
+            0.8,
+            0.64,
+            0.8
+          ]
+        }
+      ]
+    },
+    {
+      "id": "p",
+      "upper": "P",
+      "lower": "p",
+      "group": 1,
+      "tts": {
+        "sound": "puh",
+        "name": "P"
+      },
+      "picture": "pig",
+      "pictureWord": "pig",
+      "gesture": "pop",
+      "gestureZh": "鼓起腮帮子吹泡泡，泡泡破了 p p p",
+      "color": "#f78fb3",
+      "strokesLower": [
+        {
+          "t": "line",
+          "p": [
+            0.36,
+            0.42,
+            0.36,
+            1.0
+          ]
+        },
+        {
+          "t": "arc",
+          "c": [
+            0.52,
+            0.6
+          ],
+          "r": 0.16,
+          "a": [
+            -180,
+            180
+          ]
+        }
+      ],
+      "strokesUpper": [
+        {
+          "t": "line",
+          "p": [
+            0.3,
+            0.1,
+            0.3,
+            0.8
+          ]
+        },
+        {
+          "t": "line",
+          "p": [
+            0.3,
+            0.1,
+            0.5,
+            0.1
+          ]
+        },
+        {
+          "t": "arc",
+          "c": [
+            0.5,
+            0.275
+          ],
+          "r": 0.175,
+          "a": [
+            -90,
+            90
+          ],
+          "join": true
+        },
+        {
+          "t": "line",
+          "p": [
+            0.5,
+            0.45,
+            0.3,
+            0.45
+          ],
+          "join": true
+        }
+      ]
+    },
+    {
+      "id": "n",
+      "upper": "N",
+      "lower": "n",
+      "group": 1,
+      "tts": {
+        "sound": "nnn",
+        "name": "N"
+      },
+      "picture": "nest",
+      "pictureWord": "nest",
+      "gesture": "nose",
+      "gestureZh": "摸着鼻子哼 nnn，鼻子会嗡嗡响",
+      "color": "#7bd389",
+      "strokesLower": [
+        {
+          "t": "line",
+          "p": [
+            0.35,
+            0.42,
+            0.35,
+            0.8
+          ]
+        },
+        {
+          "t": "arc",
+          "c": [
+            0.5,
+            0.57
+          ],
+          "r": 0.15,
+          "a": [
+            180,
+            360
+          ]
+        },
+        {
+          "t": "line",
+          "p": [
+            0.65,
+            0.57,
+            0.65,
+            0.8
+          ],
+          "join": true
+        }
+      ],
+      "strokesUpper": [
+        {
+          "t": "line",
+          "p": [
+            0.28,
+            0.8,
+            0.28,
+            0.1
+          ]
+        },
+        {
+          "t": "line",
+          "p": [
+            0.28,
+            0.1,
+            0.72,
+            0.8
+          ],
+          "join": true
+        },
+        {
+          "t": "line",
+          "p": [
+            0.72,
+            0.8,
+            0.72,
+            0.1
+          ],
+          "join": true
+        }
+      ]
+    }
+  ]
+}

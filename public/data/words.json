@@ -1,0 +1,33 @@
+{
+  "_说明": "单词数据。letters 是拼读用的音素拆分（这里正好是字母）。item 是拼出后在世界里出现的物品贴图；没有 item 的词会生成一块写着单词的木牌。guided=true 的词会出现在“帮鸭鸭拼”的任务里（需要有图）。",
+  "words": [
+    { "id": "pin",  "letters": ["p", "i", "n"],      "zh": "图钉",   "item": "pin",    "guided": true },
+    { "id": "pan",  "letters": ["p", "a", "n"],      "zh": "平底锅", "item": "pan",    "guided": true },
+    { "id": "tap",  "letters": ["t", "a", "p"],      "zh": "水龙头", "item": "tap",    "guided": true },
+    { "id": "tin",  "letters": ["t", "i", "n"],      "zh": "铁罐",   "item": "tin",    "guided": true },
+    { "id": "ant",  "letters": ["a", "n", "t"],      "zh": "蚂蚁",   "item": "ant",    "guided": true },
+    { "id": "nap",  "letters": ["n", "a", "p"],      "zh": "小睡",   "item": "nap",    "guided": true },
+    { "id": "sip",  "letters": ["s", "i", "p"],      "zh": "小口喝", "item": "sip",    "guided": true },
+    { "id": "sit",  "letters": ["s", "i", "t"],      "zh": "坐",     "item": "sit",    "guided": true },
+    { "id": "pit",  "letters": ["p", "i", "t"],      "zh": "小坑",   "item": "pit",    "guided": true },
+    { "id": "spin", "letters": ["s", "p", "i", "n"], "zh": "旋转",   "item": "top",    "guided": true },
+    { "id": "sat",  "letters": ["s", "a", "t"],      "zh": "坐过" },
+    { "id": "pat",  "letters": ["p", "a", "t"],      "zh": "轻拍" },
+    { "id": "tip",  "letters": ["t", "i", "p"],      "zh": "尖儿" },
+    { "id": "nip",  "letters": ["n", "i", "p"],      "zh": "轻咬" },
+    { "id": "tan",  "letters": ["t", "a", "n"],      "zh": "晒黑" },
+    { "id": "sap",  "letters": ["s", "a", "p"],      "zh": "树汁" },
+    { "id": "nit",  "letters": ["n", "i", "t"],      "zh": "虫卵" },
+    { "id": "snap", "letters": ["s", "n", "a", "p"], "zh": "咔嚓" },
+    { "id": "pant", "letters": ["p", "a", "n", "t"], "zh": "喘气" },
+    { "id": "tint", "letters": ["t", "i", "n", "t"], "zh": "淡色" }
+  ],
+  "pictureWords": [
+    { "id": "snake", "zh": "蛇" },
+    { "id": "ant",   "zh": "蚂蚁" },
+    { "id": "top",   "zh": "陀螺" },
+    { "id": "igloo", "zh": "冰屋" },
+    { "id": "pig",   "zh": "小猪" },
+    { "id": "nest",  "zh": "鸟窝" }
+  ]
+}

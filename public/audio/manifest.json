@@ -1,0 +1,5 @@
+{
+  "_说明": "按 ID 登记录音文件（路径相对于 audio/ 目录）。没登记的 ID 自动用浏览器语音。ID 规则：phoneme.<字母>（字母音）、letter.<字母>（字母名）、word.<单词>（单词）、prompt.<键名>（中文引导，见 data/prompts.json）。",
+  "files": {
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "name": "sound-block-isles",
+  "private": true,
+  "version": "0.1.0",
+  "description": "声音方块岛：给 5–7 岁孩子的方块像素英语自然拼读游戏",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview --host",
+    "test": "vitest run",
+    "smoke": "node scripts/smoke.mjs"
+  },
+  "dependencies": {
+    "phaser": "3.90.0"
+  },
+  "devDependencies": {
+    "typescript": "~5.6.3",
+    "vite": "^6.4.5",
+    "vitest": "^3.2.7"
+  }
+}
