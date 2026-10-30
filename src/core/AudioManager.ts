@@ -15,7 +15,12 @@ interface Fallback {
 export type SeqItem = string | { id: string } | { pause: number } | { text: string; lang?: string };
 
 export class AudioManager {
-  private files: Record<string, string> = {};
+  private files: Record<string, string | string[]> = {};
+  /** 改了主角名字后，含“比普”的录音不再适用，改用浏览器语音 */
+  private skipFiles = new Set<string>();
+  private buffers = new Map<string, Promise<AudioBuffer | null>>();
+  private source: AudioBufferSourceNode | null = null;
+  private utterances: SpeechSynthesisUtterance[] = [];
   private fallbacks: Record<string, Fallback> = {};
   private cache = new Map<string, HTMLAudioElement>();
   private current: HTMLAudioElement | null = null;
@@ -56,37 +61,112 @@ export class AudioManager {
   }
 
   hasRecording(id: string): boolean {
-    return id in this.files;
+    return id in this.files && !this.skipFiles.has(id);
+  }
+
+  get recordingCount(): number {
+    return Object.keys(this.files).length;
+  }
+
+  setSkipFiles(ids: Iterable<string>): void {
+    this.skipFiles = new Set(ids);
+  }
+
+  /** 是否有可用的浏览器语音（没有录音时用） */
+  get speechAvailable(): boolean {
+    return !!this.synth && (this.voices.length > 0 || (this.synth.getVoices?.().length ?? 0) > 0);
   }
 
   /** 第一次点击屏幕时调用：iOS/Safari 要求声音由用户手势触发 */
   unlock(): void {
-    if (this.unlocked) return;
+    if (this.unlocked) {
+      if (this.ctx && this.ctx.state !== 'running') void this.ctx.resume();
+      return;
+    }
     this.unlocked = true;
+    try {
+      // iOS 16.4+：按“媒体播放”处理，静音开关打开时也有声音
+      const nav = navigator as unknown as { audioSession?: { type: string } };
+      if (nav.audioSession) nav.audioSession.type = 'playback';
+    } catch {
+      /* 不支持就算了 */
+    }
     try {
       const Ctx = window.AudioContext ?? (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
       this.ctx = new Ctx();
+      // 播放一小段静音，iOS 才算真正解锁
+      const b = this.ctx.createBuffer(1, 1, 22050);
+      const src = this.ctx.createBufferSource();
+      src.buffer = b;
+      src.connect(this.ctx.destination);
+      src.start(0);
       void this.ctx.resume();
     } catch {
       this.ctx = null;
     }
     const synth = this.synth;
-    if (synth) {
-      const u = new SpeechSynthesisUtterance(' ');
-      u.volume = 0;
+    if (synth && !this.recordingCount) {
+      const u = new SpeechSynthesisUtterance('.');
+      u.volume = 0.01;
       synth.speak(u);
     }
+    this.preloadAll();
+  }
+
+  /** 后台预先解码全部录音（总共一两 MB），之后播放没有延迟 */
+  private preloadAll(): void {
+    const urls = Object.values(this.files).flat();
+    let i = 0;
+    const next = (): void => {
+      const url = urls[i++];
+      if (!url) return;
+      void this.buffer(this.baseUrl + url).then(next);
+    };
+    for (let k = 0; k < 4; k++) next();
+  }
+
+  private buffer(url: string): Promise<AudioBuffer | null> {
+    let p = this.buffers.get(url);
+    if (!p) {
+      const ctx = this.ctx!;
+      p = fetch(url)
+        .then((r) => (r.ok ? r.arrayBuffer() : Promise.reject(new Error(String(r.status)))))
+        .then((data) => new Promise<AudioBuffer>((res, rej) => {
+          // 旧版 Safari 只支持回调写法
+          const ret = ctx.decodeAudioData(data, res, rej) as unknown as Promise<AudioBuffer> | undefined;
+          ret?.catch?.(rej);
+        }))
+        .catch(() => null);
+      this.buffers.set(url, p);
+    }
+    return p;
   }
 
   /** 停止正在播放的一切（切换场景时调用） */
   stop(): void {
     this.generation++;
-    this.synth?.cancel();
+    const synth = this.synth;
+    // 只有正在说话时才 cancel：有些手机浏览器 cancel 之后紧跟的 speak 会被吞掉
+    if (synth && (synth.speaking || synth.pending)) {
+      synth.cancel();
+      this.cancelledAt = performance.now();
+    }
+    if (this.source) {
+      try {
+        this.source.onended = null;
+        this.source.stop();
+      } catch {
+        /* 已经停了 */
+      }
+      this.source = null;
+    }
     if (this.current) {
       this.current.pause();
       this.current = null;
     }
   }
+
+  private cancelledAt = 0;
 
   /** 播放一个 ID，返回播放结束的 Promise */
   play(id: string): Promise<void> {
@@ -110,10 +190,11 @@ export class AudioManager {
 
   private async playOne(id: string, gen: number): Promise<void> {
     if (this.muted || gen !== this.generation) return;
-    const file = this.files[id];
+    const entry = this.skipFiles.has(id) ? undefined : this.files[id];
+    const file = Array.isArray(entry) ? entry[Math.floor(Math.random() * entry.length)] : entry;
     if (file) {
-      const ok = await this.playFile(this.baseUrl + file, gen);
-      if (ok) return;
+      const ok = this.ctx ? await this.playBuffer(this.baseUrl + file, gen) : await this.playFile(this.baseUrl + file, gen);
+      if (ok || gen !== this.generation) return;
     }
     const fb = this.fallbacks[id];
     if (!fb) {
@@ -122,6 +203,28 @@ export class AudioManager {
     }
     const text = Array.isArray(fb.text) ? fb.text[Math.floor(Math.random() * fb.text.length)] : fb.text;
     await this.speak(text, fb.lang, fb.rate, gen, fb.pitch);
+  }
+
+  /** 用 Web Audio 播放（手势解锁一次后，之后任何时候都能播） */
+  private async playBuffer(url: string, gen: number): Promise<boolean> {
+    const ctx = this.ctx!;
+    if (ctx.state !== 'running') await ctx.resume().catch(() => undefined);
+    const buf = await this.buffer(url);
+    if (!buf) return false;
+    if (gen !== this.generation) return true;
+    return new Promise((resolve) => {
+      const src = ctx.createBufferSource();
+      src.buffer = buf;
+      src.connect(ctx.destination);
+      this.source = src;
+      const guard = setTimeout(() => resolve(true), buf.duration * 1000 + 800);
+      src.onended = () => {
+        clearTimeout(guard);
+        if (this.source === src) this.source = null;
+        resolve(true);
+      };
+      src.start(0);
+    });
   }
 
   private playFile(url: string, gen: number): Promise<boolean> {
@@ -155,9 +258,13 @@ export class AudioManager {
     return pool.find((v) => v.localService) ?? pool[0];
   }
 
-  private speak(text: string, lang: string, rate: number, gen: number, pitch = 1.05): Promise<void> {
+  private async speak(text: string, lang: string, rate: number, gen: number, pitch = 1.05): Promise<void> {
     const synth = this.synth;
     if (!synth || gen !== this.generation) return wait(300);
+    const since = performance.now() - this.cancelledAt;
+    if (since < 120) await wait(120 - since);
+    if (gen !== this.generation) return;
+    if (synth.paused) synth.resume();
     return new Promise((resolve) => {
       const u = new SpeechSynthesisUtterance(text);
       u.lang = lang;
@@ -170,8 +277,11 @@ export class AudioManager {
       const guard = setTimeout(() => resolve(), 1500 + (text.length * perChar) / rate);
       u.onend = u.onerror = () => {
         clearTimeout(guard);
+        this.utterances = this.utterances.filter((x) => x !== u);
         resolve();
       };
+      // 保留引用：部分安卓浏览器会把还没说完的 utterance 回收掉
+      this.utterances.push(u);
       synth.speak(u);
     });
   }
@@ -181,6 +291,7 @@ export class AudioManager {
   sfx(kind: 'tap' | 'good' | 'soft' | 'unlock' | 'pop' | 'place' | 'step'): void {
     const ctx = this.ctx;
     if (!ctx || this.muted) return;
+    if (ctx.state !== 'running') void ctx.resume();
     const notes: Record<string, [number, number, OscillatorType][]> = {
       tap: [[660, 0.06, 'square']],
       pop: [[880, 0.05, 'square'], [1320, 0.05, 'square']],

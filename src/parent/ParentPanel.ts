@@ -183,7 +183,8 @@ function renderDashboard(): void {
     <h3>设置</h3>
     <div class="row">主角名字：<input data-name value="${esc(d.heroName)}" style="width:140px" /><button data-savename>保存</button></div>
     <div class="row">单次提醒休息：<select data-min>${[10, 15, 20, 30].map((m) => `<option value="${m}" ${m === d.settings.sessionMinutes ? 'selected' : ''}>${m} 分钟</option>`).join('')}</select></div>
-    <p class="muted">语音：${hasEn ? '英文语音可用' : '⚠ 此设备没有英文语音'} · ${hasZh ? '中文语音可用' : '⚠ 此设备没有中文语音（建议用 Chrome / Safari，或补录音）'} · 录音文件请放到服务器的 audio/ 目录并登记到 manifest.json。</p>
+    <p class="muted">声音：已有录音 ${G.audio.recordingCount} 条（没有录音的内容用浏览器语音：${hasEn ? '英文可用' : '⚠ 无英文'} · ${hasZh ? '中文可用' : '⚠ 无中文'}）。iPhone 请把侧边静音开关拨到响铃，并调高媒体音量。</p>
+    <div class="row"><button class="ghost" data-test>🔊 声音测试</button><span class="muted" data-testmsg></span></div>
     <div class="row">
       <button class="ghost" data-export>导出进度</button>
       <label class="ghost" style="border:3px solid #2b2d42;padding:8px 14px;cursor:pointer">导入进度<input type="file" accept="application/json" data-import style="display:none"></label>
@@ -193,6 +194,12 @@ function renderDashboard(): void {
   mount(node);
 
   node.querySelector('[data-x]')!.addEventListener('click', close);
+  node.querySelector('[data-test]')!.addEventListener('click', async () => {
+    const msg = node.querySelector('[data-testmsg]')!;
+    G.audio.unlock();
+    msg.textContent = '应该听到：中文“真棒”，然后英文 /s/ 和 snake';
+    await G.audio.sequence(['prompt.great', `phoneme.s`, 'word.snake']);
+  });
   node.querySelector('[data-savename]')!.addEventListener('click', () => {
     const v = (node.querySelector('[data-name]') as HTMLInputElement).value.trim().slice(0, 12);
     if (!v) return;

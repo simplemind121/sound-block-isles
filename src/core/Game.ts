@@ -60,6 +60,10 @@ class GameState {
       const text = Array.isArray(v) ? v.map((t) => t.replace(/比普/g, name)) : v.replace(/比普/g, name);
       a.register(`prompt.${k}`, { text, lang: this.content.promptLang, rate: 1.0, pitch: 1.2 });
     }
+    // 改了主角名字：含“比普”的录音不再适用
+    const renamed = (this.save.data.heroName || '比普') !== '比普';
+    const named = Object.entries(this.content.prompts).filter(([, v]) => [v].flat().some((t) => t.includes('比普'))).map(([k]) => `prompt.${k}`);
+    a.setSkipFiles(renamed ? named : []);
     // 主题岛里的开放式问题：q.<问题>、q.<问题>.why、opt.<问题>.<选项>
     const zh = (text: string) => ({ text, lang: this.content.promptLang, rate: 1.0, pitch: 1.2 });
     for (const isl of this.content.islands) {

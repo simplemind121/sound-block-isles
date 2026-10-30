@@ -5,7 +5,7 @@
 
 - 技术：Phaser 3 + TypeScript + Vite，构建为纯静态网页，打开即玩，无需登录
 - 进度：浏览器 localStorage（世界、掌握度、复习队列、使用时长）
-- 引导语音：中文；学习内容：英文。没有录音时使用浏览器语音（Web Speech API）
+- 引导语音：中文；学习内容：英文。自带一套用开源模型 Kokoro（Apache-2.0）生成的 mp3（`public/audio/`），手机和微信里也能播；某个 ID 没有音频文件时才退回浏览器语音
 - 画面、角色、名称全部原创，由代码绘制，不使用任何 Minecraft 的角色、名称、贴图或标志
 
 ## 第一版包含什么
@@ -83,7 +83,8 @@ tests/                  单元测试
 
 - **加字母**：在 `letters.json` 加一项（笔画坐标说明写在文件开头），在 `islands.json` 的岛屿 `letters` 里加上它。配图名要在 `src/art/sprites.ts` 里有对应的像素画；方块上的小字形可以在 `SMALL_GLYPHS` 里手绘，没有的话会用笔画自动生成。
 - **加单词**：在 `words.json` 加一项。`guided: true` 且有 `item` 的词会出现在“帮鸭鸭拼”里；只有字母都学会了才会出现。
-- **加录音**：见 `public/audio/README.md`。最优先补的是 `phoneme.*`（字母音），浏览器语音读不准单独的音素。
+- **加录音**：见 `public/audio/README.md`。真人录音放进去后，在 `manifest.json` 里改成新文件，并把这个 ID 写进 `keep`，以后重新生成时就不会被覆盖。
+- **改了文字后重新生成音频**：改了 `prompts.json`、加了单词或字母后，运行 `scripts/gen-audio.py`（准备步骤写在脚本开头），只会生成缺少的文件；改了已有句子的文字要加 `--force`，或者先删掉对应的 mp3。
 - **换美术**：把 PNG 放进 `public/art/`，在 `public/art/manifest.json` 里登记同名贴图即可覆盖。
 - **开放下一座岛**：把 `islands.json` 里对应岛屿的 `status` 改成 `open`，并补上字母和单词（第一版的场景只使用第一座岛）。
 
@@ -167,6 +168,7 @@ sudo apt-get install -y certbot python3-certbot-nginx && sudo certbot --nginx -d
 
 ## 已知限制（第一版）
 
-- 浏览器语音读单独的字母音不准（例如 /t/ 会读成 “tuh”），正式使用前建议补录 44 个音素和单词音频。部分安卓设备可能没有中文语音，家长页会提示。
+- 自带音频是 AI 生成的。字母音用国际音标合成（/s/ 拉长，/t/ /p/ 是短促的送气音），请家长先试听；不满意的话可以换成真人录音（优先补字母音）。
+- iPhone 侧边静音开关打开时，旧版 iOS（16.4 以下）可能没有声音。
 - 回忆阶段用“把字母拖到对的声音上”代替开口说，因为第一版没有语音识别。
 - 只做了第一座岛（我的家）；后续岛屿在 `islands.json` 里已列出，显示为“即将开放”。
